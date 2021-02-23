@@ -28,6 +28,8 @@ export default class App extends Component {
           <Campo minado />
           <Campo minado aberto/>
           <Campo minado aberto explodida/>
+          <Campo marcadoComBandeira />
+          <Campo marcadoComBandeira aberto/>
         </View>
       </SafeAreaView>
     )
@@ -39,6 +41,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#F5FCFF',
     paddingTop: 200
   },
   texto:{

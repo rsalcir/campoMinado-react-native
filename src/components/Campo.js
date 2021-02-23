@@ -3,23 +3,26 @@ import { View, StyleSheet, Text } from 'react-native'
 import parametros from '../parametros'
 
 import Mina from './Mina'
+import Bandeira from './Bandeira'
 
 export default (props) => {
-    const { minado, aberto, minasAoRedor, explodida } = props;
+    const { minado, aberto, minasAoRedor, explodida, marcadoComBandeira } = props;
     
     const estiloDoCampo = [styles.campo];
     if (aberto) estiloDoCampo.push(styles.aberto);
     if (explodida) estiloDoCampo.push(styles.explodida);
-    if (estiloDoCampo.length == 1) estiloDoCampo.push(styles.regular);
-    let cor = getCorQuandotiverMinasAoRedor(minasAoRedor);
+    if (marcadoComBandeira) estiloDoCampo.push(styles.marcadoComBandeira);
+    if (!aberto && !explodida) estiloDoCampo.push(styles.regular);
+
     return (
         <View style={estiloDoCampo}>
             { !minado && aberto && minasAoRedor > 0 ? 
-                <Text style={ styles.label, {color: cor} }>
+                <Text style={ styles.label, {color: getCorQuandotiverMinasAoRedor(minasAoRedor)} }>
                     {minasAoRedor}
                 </Text> 
             :false }
             { minado && aberto ? <Mina/> : false }
+            { marcadoComBandeira && !aberto ? <Bandeira/> : false}
         </View>
     )
 }
