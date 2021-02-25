@@ -15,7 +15,8 @@ import {
     abrirCampo,
     temExplosao,
     ganhouOJogo,
-    exibirMinas
+    exibirMinas,
+    inverterABandeira
 } from './logicaDoJogo'
 
 export default class App extends Component {
@@ -59,6 +60,18 @@ export default class App extends Component {
     this.setState({ tabuleiro, ganhou, perdeu });
   }
 
+  selecionarCampoDoTabuleiro = (linha, coluna) => {
+    const tabuleiro = clonarTabuleiro(this.state.tabuleiro);
+    inverterABandeira(tabuleiro, linha, coluna);
+    const ganhou = ganhouOJogo(tabuleiro);
+
+    if(ganhou){
+      Alert.alert('Parabéns você ganhou o jogo!!!');
+    }
+
+    this.setState({ tabuleiro, ganhou });
+  }
+
   render(){
     return (
       <>
@@ -68,6 +81,7 @@ export default class App extends Component {
             <CampoMinado 
               tabuleiro={this.state.tabuleiro} 
               abrirCampo={this.abrirCampoDoTabuleiro}
+              selecionarCampo={this.selecionarCampoDoTabuleiro}
             />
           </View>
         </View>

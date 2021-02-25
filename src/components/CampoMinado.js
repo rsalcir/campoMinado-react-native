@@ -3,15 +3,17 @@ import { View, StyleSheet } from 'react-native'
 import Campo from './Campo'
 
 export default (props) => {
-    const linhas = props.tabuleiro.map((linha, indiceDaLinha) =>{
-        const colunas = linha.map((coluna, indiceDaColuna) => {
+    const linhas = props.tabuleiro.map((conteudoDaLinha, linha) =>{
+        const colunas = conteudoDaLinha.map((conteudoDaColuna, coluna) => {
             return (
-                <Campo {...coluna} key={indiceDaColuna} 
-                    onOpen={() => props.abrirCampo(indiceDaLinha, indiceDaColuna)}/>
+                <Campo {...conteudoDaColuna} key={coluna} 
+                    onOpen={() => props.abrirCampo(linha, coluna)}
+                    onSelect={() => props.selecionarCampo(linha, coluna)}
+                />
             );
         });
         return (
-            <View key={indiceDaLinha} style={{flexDirection: 'row'}}>
+            <View key={linha} style={{flexDirection: 'row'}}>
                 {colunas}
             </View>
         );

@@ -93,11 +93,17 @@ const ganhouOJogo = tabuleiro => campos(tabuleiro).filter(pendente).length === 0
 const exibirMinas = tabuleiro => campos(tabuleiro).filter(campo => campo.minado)
     .forEach(campo => campo.aberto = true);
 
+const inverterABandeira = (tabuleiro, linha, coluna) => {
+    const campo = tabuleiro[linha][coluna];
+    campo.marcadoComBandeira = !campo.marcadoComBandeira;
+}
+
 export { 
     criarTabuleiroComMinas,
     clonarTabuleiro,
     abrirCampo,
     temExplosao,
     ganhouOJogo,
-    exibirMinas
+    exibirMinas,
+    inverterABandeira
 }

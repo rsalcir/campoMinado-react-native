@@ -15,7 +15,7 @@ export default (props) => {
     if (!aberto && !explodida) estiloDoCampo.push(styles.regular);
 
     return (
-        <TouchableWithoutFeedback onPress={props.onOpen}>
+        <TouchableWithoutFeedback onPress={props.onOpen} onLongPress={props.onSelect}>
             <View style={estiloDoCampo}>
                 { !minado && aberto && minasAoRedor > 0 ? 
                     <Text style={ styles.label, {color: getCorQuandotiverMinasAoRedor(minasAoRedor)} }>
