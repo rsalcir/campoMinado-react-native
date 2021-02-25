@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, StyleSheet, Text } from 'react-native'
+import { View, StyleSheet, Text, TouchableWithoutFeedback } from 'react-native'
 import parametros from '../parametros'
 
 import Mina from './Mina'
@@ -15,15 +15,17 @@ export default (props) => {
     if (!aberto && !explodida) estiloDoCampo.push(styles.regular);
 
     return (
-        <View style={estiloDoCampo}>
-            { !minado && aberto && minasAoRedor > 0 ? 
-                <Text style={ styles.label, {color: getCorQuandotiverMinasAoRedor(minasAoRedor)} }>
-                    {minasAoRedor}
-                </Text> 
-            :false }
-            { minado && aberto ? <Mina/> : false }
-            { marcadoComBandeira && !aberto ? <Bandeira/> : false}
-        </View>
+        <TouchableWithoutFeedback onPress={props.onOpen}>
+            <View style={estiloDoCampo}>
+                { !minado && aberto && minasAoRedor > 0 ? 
+                    <Text style={ styles.label, {color: getCorQuandotiverMinasAoRedor(minasAoRedor)} }>
+                        {minasAoRedor}
+                    </Text> 
+                :false }
+                { minado && aberto ? <Mina/> : false }
+                { marcadoComBandeira && !aberto ? <Bandeira/> : false}
+            </View>
+        </TouchableWithoutFeedback>
     )
 }
 

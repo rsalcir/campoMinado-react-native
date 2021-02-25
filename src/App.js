@@ -4,12 +4,18 @@ import {
   StyleSheet,
   View,
   Text,
+  Alert
 } from 'react-native';
 
 import parametros from './parametros'
 import CampoMinado from './components/CampoMinado'
 import { 
-  criarTabuleiroComMinas 
+    criarTabuleiroComMinas,
+    clonarTabuleiro,
+    abrirCampo,
+    temExplosao,
+    ganhouOJogo,
+    exibirMinas
 } from './logicaDoJogo'
 
 export default class App extends Component {
@@ -29,8 +35,28 @@ export default class App extends Component {
     const colunas = parametros.getColunas();
     const linhas = parametros.getLinhas();
     return {
-        tabuleiro: criarTabuleiroComMinas(linhas, colunas, this.obterQuantidadeDeMinas())
+        tabuleiro: criarTabuleiroComMinas(linhas, colunas, this.obterQuantidadeDeMinas()),
+        ganhou: false,
+        perdeu: false  
     }
+  }
+
+  abrirCampoDoTabuleiro = (linha, coluna) => {
+    const tabuleiro = clonarTabuleiro(this.state.tabuleiro);
+    abrirCampo(tabuleiro, linha, coluna);
+    const ganhou = ganhouOJogo(tabuleiro);
+    const perdeu = temExplosao(tabuleiro);
+
+    if(perdeu) {
+      exibirMinas(tabuleiro);
+      Alert.alert('Perdeu o jogo, tente novamente!!!');
+    }
+
+    if(ganhou){
+      Alert.alert('Parabéns você ganhou o jogo!!!');
+    }
+
+    this.setState({ tabuleiro, ganhou, perdeu });
   }
 
   render(){
@@ -39,7 +65,10 @@ export default class App extends Component {
         <View style={styles.container}>
           <Text style={styles.texto}>Campo Minado</Text>
           <View style={styles.tabuleiro}>
-            <CampoMinado tabuleiro={this.state.tabuleiro}/>
+            <CampoMinado 
+              tabuleiro={this.state.tabuleiro} 
+              abrirCampo={this.abrirCampoDoTabuleiro}
+            />
           </View>
         </View>
       </>
