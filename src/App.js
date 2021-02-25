@@ -1,37 +1,48 @@
 
 import React, { Component } from 'react';
 import {
-  SafeAreaView,
   StyleSheet,
   View,
   Text,
 } from 'react-native';
 
 import parametros from './parametros'
-import Campo from './components/Campo';
+import CampoMinado from './components/CampoMinado'
+import { 
+  criarTabuleiroComMinas 
+} from './logicaDoJogo'
 
 export default class App extends Component {
-  render (){
+
+  constructor(props) {
+    super(props);
+    this.state = this.criarEstado();
+  }
+
+  obterQuantidadeDeMinas = () => {
+    const colunas = parametros.getColunas();
+    const linhas = parametros.getLinhas();
+    return Math.ceil( colunas * linhas * parametros.nivelDeDificuldade);
+  }
+
+  criarEstado = () => {
+    const colunas = parametros.getColunas();
+    const linhas = parametros.getLinhas();
+    return {
+        tabuleiro: criarTabuleiroComMinas(linhas, colunas, this.obterQuantidadeDeMinas())
+    }
+  }
+
+  render(){
     return (
-      <SafeAreaView>
+      <>
         <View style={styles.container}>
-          <Text style={styles.texto}>Iniciando projeto campo minado!!!</Text>
-          <Text style={styles.texto}>
-            Tamanho da grade: {parametros.getRowsAmount()}x{parametros.getColumnsAmount()}
-          </Text>
-          <Campo/>
-          <Campo aberto/>
-          <Campo aberto minasAoRedor={1}/>
-          <Campo aberto minasAoRedor={2}/>
-          <Campo aberto minasAoRedor={3}/>
-          <Campo aberto minasAoRedor={6}/>
-          <Campo minado />
-          <Campo minado aberto/>
-          <Campo minado aberto explodida/>
-          <Campo marcadoComBandeira />
-          <Campo marcadoComBandeira aberto/>
+          <Text style={styles.texto}>Campo Minado</Text>
+          <View style={styles.tabuleiro}>
+            <CampoMinado tabuleiro={this.state.tabuleiro}/>
+          </View>
         </View>
-      </SafeAreaView>
+      </>
     )
   }
 };
@@ -39,13 +50,13 @@ export default class App extends Component {
 const styles = StyleSheet.create({
   container:{
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-    paddingTop: 200
+    justifyContent: 'flex-end',
   },
   texto:{
-    fontSize: 20,
-    textAlign:'center'
-  }  
+    textAlign: 'center'
+  },
+  tabuleiro:{
+    alignItems: 'center',
+    backgroundColor: '#AAA'
+  }
 });

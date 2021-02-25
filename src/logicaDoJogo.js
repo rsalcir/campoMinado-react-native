@@ -1,4 +1,4 @@
-const criarCampo = (linhas, colunas) => {
+const criarTabuleiro = (linhas, colunas) => {
     return Array(linhas).fill(0).map((_, linha) => {
         return Array(colunas).fill(0).map((_, coluna) => {
             return {
@@ -28,10 +28,10 @@ const espalharMinas = (campo, minasParaPlantar) => {
     }
 };
 
-const criarCampoMinado = (linhas, colunas, minasParaPlantar) => {
-    const campoMinado = criarCampo(linhas, colunas);
-    espalharMinas(campo, minasParaPlantar);
-    return campoMinado;
+const criarTabuleiroComMinas = (linhas, colunas, minasParaPlantar) => {
+    const tabuleiro = criarTabuleiro(linhas, colunas);
+    espalharMinas(tabuleiro, minasParaPlantar);
+    return tabuleiro;
 };
 
-export { criarCampoMinado }
+export { criarTabuleiroComMinas }

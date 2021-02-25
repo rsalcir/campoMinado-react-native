@@ -7,15 +7,15 @@ const parametros = {
     borderSize: 5,
     fontSize: 15,
     headerRatio: 0.15, // Proporcao do painel superior na tela
-    difficultLevel: 0.1,
-    getColumnsAmount() {
-        const width = Dimensions.get('window').width
-        return Math.floor(width / this.blockSize)
-    },
-    getRowsAmount() {
+    nivelDeDificuldade: 0.1,
+    getLinhas() {
         const totalHeight = Dimensions.get('window').height
         const boardHeigth = totalHeight * (1 - this.headerRatio)
         return Math.floor(boardHeigth / this.blockSize)
+    },
+    getColunas() {
+        const width = Dimensions.get('window').width
+        return Math.floor(width / this.blockSize)
     }
 }
 
