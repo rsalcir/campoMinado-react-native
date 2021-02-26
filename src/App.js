@@ -7,8 +7,10 @@ import {
   Alert
 } from 'react-native';
 
-import parametros from './parametros'
-import CampoMinado from './components/CampoMinado'
+import parametros from './parametros';
+import CampoMinado from './components/CampoMinado';
+import Cabecalho from './components/Cabecalho';
+import SeletorDeNivel from './screens/SeletorDeNivel';
 import { 
     criarTabuleiroComMinas,
     clonarTabuleiro,
@@ -16,8 +18,9 @@ import {
     temExplosao,
     ganhouOJogo,
     exibirMinas,
-    inverterABandeira
-} from './logicaDoJogo'
+    inverterABandeira,
+    bandeirasJaUtilizadas
+} from './logicaDoJogo';
 
 export default class App extends Component {
 
@@ -38,7 +41,8 @@ export default class App extends Component {
     return {
         tabuleiro: criarTabuleiroComMinas(linhas, colunas, this.obterQuantidadeDeMinas()),
         ganhou: false,
-        perdeu: false  
+        perdeu: false,
+        exibeSeletorDeNivel: false 
     }
   }
 
@@ -72,20 +76,37 @@ export default class App extends Component {
     this.setState({ tabuleiro, ganhou });
   }
 
+  calcularQuantidadeDeBandeirasQueFaltamParaMarcar = () => {
+    return this.obterQuantidadeDeMinas() - bandeirasJaUtilizadas(this.state.tabuleiro);
+  }
+
+  nivelSelecionado = nivel => {
+    parametros.nivelDeDificuldade = nivel;
+    this.setState(this.criarEstado());
+  }
+
   render(){
     return (
-      <>
         <View style={styles.container}>
-          <Text style={styles.texto}>Campo Minado</Text>
-          <View style={styles.tabuleiro}>
-            <CampoMinado 
-              tabuleiro={this.state.tabuleiro} 
-              abrirCampo={this.abrirCampoDoTabuleiro}
-              selecionarCampo={this.selecionarCampoDoTabuleiro}
+            <Text style={styles.titulo}>Campo Minado</Text>
+            <SeletorDeNivel 
+              visivel={this.state.exibeSeletorDeNivel}
+              selecionarNivel={this.nivelSelecionado}
+              fecharModal={() => this.setState({ exibeSeletorDeNivel: false })}
+            /> 
+            <Cabecalho 
+              bandeirasQueFaltam = {this.calcularQuantidadeDeBandeirasQueFaltamParaMarcar()}
+              novoJogo={() => this.setState(this.criarEstado())}
+              exibirModal={() => this.setState({ exibeSeletorDeNivel: true })}
             />
-          </View>
+            <View style={styles.tabuleiro}>
+              <CampoMinado 
+                tabuleiro={this.state.tabuleiro} 
+                abrirCampo={this.abrirCampoDoTabuleiro}
+                selecionarCampo={this.selecionarCampoDoTabuleiro}
+              />
+            </View>
         </View>
-      </>
     )
   }
 };
@@ -95,11 +116,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end',
   },
-  texto:{
-    textAlign: 'center'
-  },
   tabuleiro:{
     alignItems: 'center',
     backgroundColor: '#AAA'
+  },
+  titulo: {
+    backgroundColor: '#EEE',
+    textAlign: 'center',
+    fontSize: 30,
+    fontWeight: 'bold'
   }
 });

@@ -98,6 +98,8 @@ const inverterABandeira = (tabuleiro, linha, coluna) => {
     campo.marcadoComBandeira = !campo.marcadoComBandeira;
 }
 
+const bandeirasJaUtilizadas = tabuleiro => campos(tabuleiro).filter(campo => campo.marcadoComBandeira).length;
+
 export { 
     criarTabuleiroComMinas,
     clonarTabuleiro,
@@ -105,5 +107,6 @@ export {
     temExplosao,
     ganhouOJogo,
     exibirMinas,
-    inverterABandeira
+    inverterABandeira,
+    bandeirasJaUtilizadas
 }
